@@ -30,6 +30,7 @@ The project is designed to demonstrate practical skills that are useful for tech
 - Usage trend line chart showing active users and playback hours over time.
 - Backend GitHub Actions workflow that seeds the database and runs Pytest.
 - Frontend GitHub Actions workflow that installs dependencies and runs the production build.
+- Deployment-ready environment variables for frontend API URL and backend CORS origins.
 - AI-assisted development log explaining how AI was used and manually reviewed.
 
 ## Tech stack
@@ -46,7 +47,7 @@ Testing and CI: Pytest, GitHub Actions, npm build
 ```text
 backend/        FastAPI app, SQLAlchemy models, seed data and tests
 frontend/       React/Vite dashboard
-docs/           API spec, architecture notes, testing plan and AI log
+docs/           API spec, architecture, deployment notes, testing plan and AI log
 .github/        Backend and frontend GitHub Actions workflows
 ```
 
@@ -112,6 +113,8 @@ The frontend expects the backend to be running at:
 http://127.0.0.1:8000
 ```
 
+For a deployed or non-local backend, set `VITE_API_BASE_URL` in `frontend/.env` or in the hosting provider's environment variables.
+
 ## Tests
 
 Run backend tests from the `backend` folder:
@@ -139,6 +142,35 @@ npm run build
 ```
 
 The frontend GitHub Actions workflow runs the same install and build flow.
+
+## Deployment preparation
+
+This repository is prepared for a split demo deployment:
+
+```text
+Frontend: static Vite build on Vercel, Netlify or similar
+Backend: FastAPI service on Render, Railway, Fly.io or similar
+Database: SQLite demo database seeded with synthetic data
+```
+
+Deployment-related environment examples are provided in:
+
+```text
+backend/.env.example
+frontend/.env.example
+```
+
+Important environment variables:
+
+```text
+VITE_API_BASE_URL=https://your-backend-url.example
+ALLOWED_ORIGINS=https://your-frontend-url.example
+DATABASE_URL=sqlite:///./media_tech_tracker.db
+```
+
+See `docs/deployment.md` for the full deployment checklist, including backend start command, frontend build settings and smoke-test URLs.
+
+No public hosted URL is included yet.
 
 ## Main API endpoints
 
@@ -169,9 +201,11 @@ See `docs/api-spec.md` for request examples and response shapes.
 - Uses synthetic data only; it does not contain real partner, customer or product data.
 - Independent portfolio project; not affiliated with Dolby.
 - SQLite is used for a simple local demo, not production-scale storage.
+- A hosted SQLite demo may reset when a platform rebuilds or restarts the backend service.
 - No authentication or role-based access control yet.
-- The frontend API base URL is configured for local development.
+- The frontend API base URL defaults to local development and must be configured for deployment.
 - Data is reseeded manually with `python -m app.seed_data` rather than managed through migrations.
+- No public hosted demo URL is documented yet.
 
 ## Portfolio positioning
 
@@ -181,4 +215,4 @@ CV bullet:
 
 Interview explanation:
 
-> I treated the project as an internal data platform problem. I designed a relational schema, generated synthetic usage data, built FastAPI analytics endpoints, added filters and trend aggregation, created a React dashboard, documented the API and architecture, and added GitHub Actions for backend tests and frontend builds.
+> I treated the project as an internal data platform problem. I designed a relational schema, generated synthetic usage data, built FastAPI analytics endpoints, added filters and trend aggregation, created a React dashboard, documented the API and architecture, added GitHub Actions for backend tests and frontend builds, and prepared the app for a simple split deployment.
