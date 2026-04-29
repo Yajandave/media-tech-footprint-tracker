@@ -1,0 +1,8 @@
+__pycache__/
+*.pyc
+.venv/
+media_tech_tracker.db
+node_modules/
+dist/
+.env
+.DS_Store
